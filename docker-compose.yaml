@@ -1,0 +1,46 @@
+version: '1.0'
+
+services:
+  db:
+    networks:
+      iot-network:
+        ipv4_address: 172.21.0.2
+    container_name: digital_solutions_studio_db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=btuC5IERqc
+      - MYSQL_DATABASE=digitalSolutionsStudio
+    volumes:
+      - db:/var/lib/mysql
+    image: mysql:9.0.1
+  api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://172.21.0.3:5042
+    networks:
+      iot-network:
+        ipv4_address: 172.21.0.3
+    ports:
+      - "5042:5042"
+    build:  ./DigitalSolutionsStudio.Api
+    image: api:latest
+  web:
+    networks:
+      iot-network:
+        ipv4_address: 172.21.0.4
+    ports:
+      - "3000:80"
+    build:  ./DigitalSolutionsStudio.Web/app
+    image: web:latest
+
+networks:
+  iot-network:
+      driver: bridge
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.21.0.0/16
+
+volumes:
+  db:
