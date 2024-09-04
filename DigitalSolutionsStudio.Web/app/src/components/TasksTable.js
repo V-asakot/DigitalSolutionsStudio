@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import getTasks from '../services/TasksService';
+import TASK_STATUSES from './Consts';
 
 const TasksTable = () => {
   const [tasks, setTasks] = useState([]);
-  const statuses = ["Unknown", "Open", "InProgress", "Complete"]
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -38,7 +38,7 @@ const TasksTable = () => {
               <td>{task.id}</td>
               <td>{task.name}</td>
               <td>{task.description}</td>
-              <td>{statuses[task.status]}</td>
+              <td>{TASK_STATUSES[task.status]}</td>
               <td>{new Date(task.creationDate).toLocaleString()}</td>
               <td>{new Date(task.lastModifiedDate).toLocaleString()}</td>
             </tr>
