@@ -12,7 +12,7 @@ const TasksTable = () => {
       setTasks(tasksData.tasks);
     };
 
-    fetchTasksAsync().catch((error) => { toast.error("Task are not loaded") }); 
+    fetchTasksAsync().catch((error) => { toast.error("Tasks are not loaded") }); 
   }, []);
 
   return (
