@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import getTasks from '../services/TasksService';
+import fetchTasks from '../services/TasksService';
 import TASK_STATUSES from './Consts';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TasksTable = () => {
   const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const tasksData = await getTasks();
-        setTasks(tasksData.tasks);
-      } catch (error) {
-        console.error("Failed to fetch tasks", error);
-      }
+  useEffect(() => { 
+    const fetchTasksAsync = async () => {
+      const tasksData = await fetchTasks();
+      setTasks(tasksData.tasks);
     };
 
-    fetchTasks();
+    fetchTasksAsync().catch((error) => { toast.error("Task are not loaded") }); 
   }, []);
 
   return (
@@ -45,6 +42,18 @@ const TasksTable = () => {
           ))}
         </tbody>
       </table>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
